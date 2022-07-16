@@ -1,49 +1,126 @@
-<div class="card mb-3">
-  <div class="row no-gutters">
-    <div class="col-md-4">
-      {{#if user.image}}
-      <img src="{{user.image}}" width="300px" height="300px" style="transition: opacity 0.5s; opacity:0;"
-        onload="this.style.opacity=1;" alt="Profile_image">
-      {{else}}
-      <img src="https://img95.699pic.com/element/40205/0961.png_300.png" width="300px" height="300px"
-        style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" alt="Profile_image">
-      {{/if}}
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">{{user.name}}</h5>
-        <p class="card-text">
-          {{user.email}}
-        </p>
-        <ul class="list-unstyled list-inline">
-          <li><strong>{{user.Comments.length}}</strong> 已評論餐廳</li>
-        </ul>
-        <p>
-          {{#ifCond user.id currentUser.id}}
-          <a href="/users/{{user.id}}/edit" class="btn btn-primary mx-1">Edit</a>
-          {{else}}
-          <a href="javascript:history.back()" class="btn btn-outline-secondary mx-1">Back</a>
-          {{/ifCond}}
-        </p>
-      </div>
+<div class="d-flex flex-row card p-3 mb-2 flex-wrap">
+  <!-- Profile_image -->
+  <div>
+    {{#if currentUser.image}}
+    <img src="{{currentUser.image}}" width="300px" height="300px" style="transition: opacity 0.5s; opacity:0;"
+      onload="this.style.opacity=1;" alt="Profile_image">
+    {{else}}
+    <img src="https://img95.699pic.com/element/40205/0961.png_300.png" width="300px" height="300px"
+      style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" alt="Profile_image">
+    {{/if}}
+  </div>
+  <!-- 簡介 -->
+  <div>
+    <div class="card-body">
+      <h5 class="card-title">{{currentUser.name}}</h5>
+      <p class="card-text">
+        {{currentUser.email}}
+      </p>
+
+      <ul class="list-unstyled list-inline">
+        <li><strong>{{currentUser.Comments.length}}</strong> 已評論餐廳</li>
+      </ul>
+      <ul class="list-unstyled list-inline">
+        <li><strong>{{currentUser.FavoritedRestaurants.length}}</strong> 收藏的餐廳</li>
+      </ul>
+      <ul class="list-unstyled list-inline">
+        <li><strong>{{currentUser.Followings.length}}</strong>追蹤中</li>
+      </ul>
+      <ul class="list-unstyled list-inline">
+        <li><strong>{{currentUser.Followers.length}}</strong>追隨者</li>
+      </ul>
+      <!-- edit back -->
+      <p>
+        {{#ifCond currentUser.id user.id}}
+        <a href="/users/{{user.id}}/edit" class="btn btn-primary mx-1">Edit</a>
+        {{else}}
+        <a href="javascript:history.back()" class="btn btn-outline-secondary mx-1">Back</a>
+        {{/ifCond}}
+      </p>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <br />
-    <div class="card">
-      <div class="card-header">
-        <strong>{{user.Comments.length}}</strong> 已評論餐廳
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-4">
+      <!-- 追蹤中 -->
+      <div class="row">
+        <div class="col-md-12">
+          <br />
+          <div class="card">
+            <div class="card-header">
+              <strong>{{currentUser.Followings.length}}</strong> 追蹤中
+            </div>
+            <div class="card-body">
+              {{#each currentUser.Followings}}
+              <a href="/users/{{this.id}}" class="text-decoration-none">
+                <img src="{{this.image}}" width="60" height="60" class="avatar"
+                  style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+              </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        {{#each user.Comments}}
-        <a href="/restaurants/{{this.Restaurant.id}}" class="text-decoration-none">
-          <img src="{{this.Restaurant.image}}" width="60" height="60" class="avatar" style="transition: opacity 0.5s; opacity:0;"
-            onload="this.style.opacity=1;" />
-        </a>
-        {{/each}}
+      <!-- 追隨者 -->
+      <div class="row">
+        <div class="col-md-12">
+          <br />
+          <div class="card">
+            <div class="card-header">
+              <strong>{{currentUser.Followers.length}}</strong> 追隨者
+            </div>
+            <div class="card-body">
+              {{#each currentUser.Followers}}
+              <a href="/users/{{this.id}}" class="text-decoration-none">
+                <img src="{{this.image}}" width="60" height="60" class="avatar"
+                  style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+              </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <!-- 已評論餐廳 -->
+      <div class="row">
+        <div class="col-md-12">
+          <br />
+          <div class="card">
+            <div class="card-header">
+              <strong>{{currentUser.Comments.length}}</strong> 已評論餐廳
+            </div>
+            <div class="card-body">
+              {{#each currentUser.Comments}}
+              <a href="/restaurants/{{this.Restaurant.id}}" class="text-decoration-none">
+                <img src="{{this.Restaurant.image}}" width="60" height="60" class="avatar"
+                  style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+              </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 收藏的餐廳 -->
+      <div class="row">
+        <div class="col-md-12">
+          <br />
+          <div class="card">
+            <div class="card-header">
+              <strong>{{currentUser.FavoritedRestaurants.length}}</strong> 收藏的餐廳
+            </div>
+            <div class="card-body">
+              {{#each currentUser.FavoritedRestaurants}}
+              <a href="/restaurants/{{this.id}}" class="text-decoration-none">
+                <img src="{{this.image}}" width="60" height="60" class="avatar"
+                  style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
+              </a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
